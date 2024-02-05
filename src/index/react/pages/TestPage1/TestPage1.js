@@ -7,19 +7,15 @@ function TestPage1 (props) {
 
     // == STATE
     const [response, setResponse] = useState('');
+    const [resourceResult, setResourceResult] = useState('');
     
+
     // == USE EFFECT
     
     // Mount
     useEffect(() => {
         addContentSizingListener();
     });
-
-    // Response change
-    useEffect(() => {
-        const resultP = document.querySelector('.result');
-        resultP.innerHTML = response;
-    }, [response]);
     
     
     // == FUNCTIONS
@@ -62,6 +58,12 @@ function TestPage1 (props) {
         setResponse(result);
     }
 
+    async function handleCheckResourcesClick () {
+        const result = await window.electronAPI.checkResource();
+        console.log(result);
+        setResourceResult(result);
+    }
+
     // == RENDER
 
     return (
@@ -74,6 +76,8 @@ function TestPage1 (props) {
                     <p>Click the button to receive a random response. (IPC Test)</p>
                     <button onClick={handleTestBtnClick}>Get a response</button>
                     <p className='result'>{response}</p>
+                    <button onClick={handleCheckResourcesClick}>Check Resources Folder</button>
+                    <p className='resourceResult'>{resourceResult}</p>
                 </section>
             </div>
 

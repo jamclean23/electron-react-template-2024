@@ -24,6 +24,7 @@
     overflow-x: auto;
     display: flex;
     flex-direction: column;
+    box-shadow: 1px 1px 3px rgb(26, 26, 26);
 }
 
 .page h1,

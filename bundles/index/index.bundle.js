@@ -527,6 +527,10 @@ function TestPage1(props) {
     _useState2 = _slicedToArray(_useState, 2),
     response = _useState2[0],
     setResponse = _useState2[1];
+  var _useState3 = (0,react.useState)(''),
+    _useState4 = _slicedToArray(_useState3, 2),
+    resourceResult = _useState4[0],
+    setResourceResult = _useState4[1];
 
   // == USE EFFECT
 
@@ -534,12 +538,6 @@ function TestPage1(props) {
   (0,react.useEffect)(function () {
     addContentSizingListener();
   });
-
-  // Response change
-  (0,react.useEffect)(function () {
-    var resultP = document.querySelector('.result');
-    resultP.innerHTML = response;
-  }, [response]);
 
   // == FUNCTIONS
 
@@ -572,7 +570,7 @@ function TestPage1(props) {
   }
   function handleTestBtnClick() {
     return _handleTestBtnClick.apply(this, arguments);
-  } // == RENDER
+  }
   function _handleTestBtnClick() {
     _handleTestBtnClick = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
       var result;
@@ -592,6 +590,29 @@ function TestPage1(props) {
     }));
     return _handleTestBtnClick.apply(this, arguments);
   }
+  function handleCheckResourcesClick() {
+    return _handleCheckResourcesClick.apply(this, arguments);
+  } // == RENDER
+  function _handleCheckResourcesClick() {
+    _handleCheckResourcesClick = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
+      var result;
+      return _regeneratorRuntime().wrap(function _callee2$(_context2) {
+        while (1) switch (_context2.prev = _context2.next) {
+          case 0:
+            _context2.next = 2;
+            return window.electronAPI.checkResource();
+          case 2:
+            result = _context2.sent;
+            console.log(result);
+            setResourceResult(result);
+          case 5:
+          case "end":
+            return _context2.stop();
+        }
+      }, _callee2);
+    }));
+    return _handleCheckResourcesClick.apply(this, arguments);
+  }
   return /*#__PURE__*/react.createElement("main", {
     className: "TestPage1 page"
   }, /*#__PURE__*/react.createElement("h1", null, "Hello World!"), /*#__PURE__*/react.createElement("h2", null, "First Test Page"), /*#__PURE__*/react.createElement("div", {
@@ -602,7 +623,11 @@ function TestPage1(props) {
     onClick: handleTestBtnClick
   }, "Get a response"), /*#__PURE__*/react.createElement("p", {
     className: "result"
-  }, response))), /*#__PURE__*/react.createElement("div", {
+  }, response), /*#__PURE__*/react.createElement("button", {
+    onClick: handleCheckResourcesClick
+  }, "Check Resources Folder"), /*#__PURE__*/react.createElement("p", {
+    className: "resourceResult"
+  }, resourceResult))), /*#__PURE__*/react.createElement("div", {
     className: "progressBtnsWrapper"
   }, /*#__PURE__*/react.createElement("button", {
     className: "next progressBtn",

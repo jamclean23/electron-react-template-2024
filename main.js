@@ -5,8 +5,26 @@
 
 // System
 const path = require('path');
+const fs = require('fs');
 
 const { app, BrowserWindow, ipcMain } = require('electron');
+
+// Global Vars
+let MODE;
+if (process.env.NODE_ENV === 'dev') {
+    console.log('DEVELOPMENT MODE');
+    MODE = 'dev';
+} else {
+    console.log('PRODUCTION MODE');
+    MODE = 'prod';
+}
+
+let RESOURCE_PATH;
+if (MODE === 'dev') {
+    RESOURCE_PATH = './lib';
+} else {
+    RESOURCE_PATH = path.join(process.cwd(), 'resources/lib/');
+}
 
 
 // ====== FUNCTIONS ======
@@ -69,6 +87,39 @@ function addEventListeners () {
         const randomIndex = Math.floor(Math.random()*5);
 
         return responses[randomIndex];
+    });
+
+
+    // Check resources
+    ipcMain.handle('check-resource', async (event) => {
+        console.log('Checking resource path...');
+        let blahObj;
+        try {
+            try {
+                // Attempt to access dev files
+                console.log(process.env.NODE_ENV);
+                console.log(MODE);
+                console.log(RESOURCE_PATH);
+                blahObj = JSON.parse(await fs.promises.readFile(path.join(RESOURCE_PATH, 'blah.json'), 'utf-8'));
+            } catch (err) {
+                // If failed, attempt to access prod files
+                try {
+                    blahObj = JSON.parse(await fs.promises.readFile(path.join(RESOURCE_PATH), 'utf-8'));
+                } catch (err) {
+                    throw new Error(`Unable to find dev or prod files`);
+                }
+            }
+
+            console.log('result: ' + blahObj);
+        } catch (err) {
+            console.log(err);
+            return 'An error occured' + err.toString();
+        }
+        if (blahObj.blah) {
+            return blahObj.blah;
+        } else {
+            return 'Failed to find blah.json at ' + localPath;
+        }
     });
 
     // Mac OS kills process when window closed
