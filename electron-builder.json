@@ -1,0 +1,11 @@
+{
+    "appId": "com.example.helloworld",
+    "productName": "Hello World",
+    "directories": {
+      "output": "dist"
+    },
+    "win": {
+      "target": "nsis"
+    }
+  }
+  
